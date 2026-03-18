@@ -4,7 +4,7 @@ namespace TiendaRopaPOS.Datos
 {
     public class Conexion
     {
-        private string cadena = "Server=localhost;Database=TiendaRopaDB_V4;Trusted_Connection=True;";
+        private string cadena = "Server=localhost;Database=TiendaRopaDB_V4(Pruebas);Trusted_Connection=True;";
 
         public SqlConnection ObtenerConexion()
         {

@@ -19,6 +19,7 @@ namespace TiendaRopaPOS.UI
         private string metodoPago = "";
         private string totalTexto = "";
         private string tipoDocumento = "";
+        private string cajaEmision = "";
 
         private DataTable dtImpresion = new DataTable();
         private PrintDocument printDocument1 = new PrintDocument();
@@ -31,21 +32,58 @@ namespace TiendaRopaPOS.UI
             idVenta = venta;
             modoReimpresion = reimpresion;
 
-            this.Load += FrmDetalleVenta_Load;
             btnImprimir.Click += btnImprimir_Click;
 
             printDocument1.PrintPage += printDocument1_PrintPage;
             previewDialog1.Document = printDocument1;
             previewDialog1.Width = 1000;
             previewDialog1.Height = 700;
+
+            this.Load += FrmDetalleVenta_Load;
         }
 
         private void FrmDetalleVenta_Load(object sender, EventArgs e)
         {
+            AplicarEstiloVisual();
+            AplicarAnimaciones();
             CargarCabecera();
             CargarDetalleVenta();
 
             btnImprimir.Visible = modoReimpresion;
+        }
+
+        private void AplicarEstiloVisual()
+        {
+            dgvDetalle.EnableHeadersVisualStyles = false;
+            dgvDetalle.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 52, 54);
+            dgvDetalle.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvDetalle.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvDetalle.ColumnHeadersHeight = 34;
+
+            dgvDetalle.DefaultCellStyle.BackColor = Color.FromArgb(99, 110, 114);
+            dgvDetalle.DefaultCellStyle.ForeColor = Color.White;
+            dgvDetalle.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvDetalle.DefaultCellStyle.SelectionBackColor = Color.FromArgb(75, 82, 84);
+            dgvDetalle.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvDetalle.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(75, 82, 84);
+            dgvDetalle.GridColor = Color.FromArgb(178, 190, 195);
+            dgvDetalle.BorderStyle = BorderStyle.None;
+            dgvDetalle.RowHeadersVisible = false;
+            dgvDetalle.RowTemplate.Height = 30;
+        }
+
+        private void AplicarAnimaciones()
+        {
+            btnImprimir.MouseEnter += (s, e) =>
+            {
+                btnImprimir.BackColor = Color.FromArgb(90, 75, 210);
+            };
+
+            btnImprimir.MouseLeave += (s, e) =>
+            {
+                btnImprimir.BackColor = Color.FromArgb(108, 92, 231);
+            };
         }
 
         private void CargarCabecera()
@@ -58,11 +96,13 @@ namespace TiendaRopaPOS.UI
                         v.TipoDocumento,
                         c.Nombres AS Cliente,
                         ISNULL(ven.Nombre, '') AS Vendedor,
+                        ISNULL(be.Nombre, '') AS CajaEmision,
                         mp.NombreMetodo AS MetodoPago,
                         v.Total
                     FROM Ventas v
                     INNER JOIN Clientes c ON v.IdCliente = c.IdCliente
                     LEFT JOIN Vendedores ven ON v.IdVendedor = ven.IdVendedor
+                    LEFT JOIN Bodegas be ON v.IdCajaEmision = be.IdBodega
                     INNER JOIN MetodosPago mp ON v.IdMetodoPago = mp.IdMetodoPago
                     WHERE v.IdVenta = @IdVenta";
 
@@ -78,12 +118,13 @@ namespace TiendaRopaPOS.UI
                     tipoDocumento = dr["TipoDocumento"].ToString().Trim().ToUpper();
                     cliente = dr["Cliente"].ToString();
                     vendedor = dr["Vendedor"].ToString();
+                    cajaEmision = dr["CajaEmision"].ToString();
                     metodoPago = dr["MetodoPago"].ToString();
                     totalTexto = Convert.ToDecimal(dr["Total"]).ToString("0.00");
 
                     lblDocumento.Text = "Documento: " + numeroDocumento + "  (" + tipoDocumento + ")";
                     lblCliente.Text = "Cliente: " + cliente;
-                    lblVendedor.Text = "Vendedor: " + vendedor;
+                    lblVendedor.Text = "Vendedor: " + vendedor + " | Caja: " + cajaEmision;
                     lblMetodoPago.Text = "Método pago: " + metodoPago;
                     lblTotal.Text = "Total: " + totalTexto;
 
@@ -193,6 +234,8 @@ namespace TiendaRopaPOS.UI
             e.Graphics.DrawString("Documento: " + numeroDocumento, fontNormal, Brushes.Black, x, y);
             y += 20;
             e.Graphics.DrawString("Tipo: " + tipoDocumento, fontNormal, Brushes.Black, x, y);
+            y += 20;
+            e.Graphics.DrawString("Caja: " + cajaEmision, fontNormal, Brushes.Black, x, y);
             y += 20;
             e.Graphics.DrawString("Cliente: " + cliente, fontNormal, Brushes.Black, x, y);
             y += 20;

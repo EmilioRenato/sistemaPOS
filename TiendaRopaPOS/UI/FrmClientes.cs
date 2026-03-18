@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 using TiendaRopaPOS.Datos;
 
@@ -14,8 +15,6 @@ namespace TiendaRopaPOS.UI
         {
             InitializeComponent();
 
-            this.Load += FrmClientes_Load;
-
             btnBuscar.Click += btnBuscar_Click;
             btnNuevo.Click += btnNuevo_Click;
             btnGuardar.Click += btnGuardar_Click;
@@ -23,12 +22,62 @@ namespace TiendaRopaPOS.UI
             btnLimpiar.Click += btnLimpiar_Click;
             dgvClientes.CellClick += dgvClientes_CellClick;
             txtBuscar.KeyDown += txtBuscar_KeyDown;
+
+            this.Load += FrmClientes_Load;
         }
 
         private void FrmClientes_Load(object sender, EventArgs e)
         {
+            AplicarEstiloVisual();
+            AplicarAnimaciones();
             CargarClientes();
             LimpiarCampos();
+        }
+
+        private void AplicarEstiloVisual()
+        {
+            dgvClientes.EnableHeadersVisualStyles = false;
+            dgvClientes.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 52, 54);
+            dgvClientes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvClientes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvClientes.ColumnHeadersHeight = 34;
+
+            dgvClientes.DefaultCellStyle.BackColor = Color.FromArgb(99, 110, 114);
+            dgvClientes.DefaultCellStyle.ForeColor = Color.White;
+            dgvClientes.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvClientes.DefaultCellStyle.SelectionBackColor = Color.FromArgb(75, 82, 84);
+            dgvClientes.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvClientes.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(75, 82, 84);
+            dgvClientes.GridColor = Color.FromArgb(178, 190, 195);
+            dgvClientes.BorderStyle = BorderStyle.None;
+            dgvClientes.RowHeadersVisible = false;
+            dgvClientes.RowTemplate.Height = 30;
+
+            txtBuscar.Font = new Font("Segoe UI", 10F);
+            txtDocumento.Font = new Font("Segoe UI", 10F);
+            txtNombres.Font = new Font("Segoe UI", 10F);
+            txtDireccion.Font = new Font("Segoe UI", 10F);
+            txtTelefono.Font = new Font("Segoe UI", 10F);
+            txtEmail.Font = new Font("Segoe UI", 10F);
+        }
+
+        private void AplicarAnimaciones()
+        {
+            btnBuscar.MouseEnter += (s, e) => btnBuscar.BackColor = Color.FromArgb(0, 98, 204);
+            btnBuscar.MouseLeave += (s, e) => btnBuscar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnNuevo.MouseEnter += (s, e) => btnNuevo.BackColor = Color.FromArgb(90, 75, 210);
+            btnNuevo.MouseLeave += (s, e) => btnNuevo.BackColor = Color.FromArgb(108, 92, 231);
+
+            btnGuardar.MouseEnter += (s, e) => btnGuardar.BackColor = Color.FromArgb(0, 150, 136);
+            btnGuardar.MouseLeave += (s, e) => btnGuardar.BackColor = Color.FromArgb(0, 184, 148);
+
+            btnActualizar.MouseEnter += (s, e) => btnActualizar.BackColor = Color.FromArgb(0, 98, 204);
+            btnActualizar.MouseLeave += (s, e) => btnActualizar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnLimpiar.MouseEnter += (s, e) => btnLimpiar.BackColor = Color.FromArgb(250, 177, 19);
+            btnLimpiar.MouseLeave += (s, e) => btnLimpiar.BackColor = Color.FromArgb(253, 203, 110);
         }
 
         private void CargarClientes(string filtro = "")

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
+using TiendaRopaPOS.Clases;
 using TiendaRopaPOS.Datos;
 
 namespace TiendaRopaPOS.UI
@@ -14,8 +16,6 @@ namespace TiendaRopaPOS.UI
         {
             InitializeComponent();
 
-            this.Load += FrmInventario_Load;
-
             btnBuscar.Click += btnBuscar_Click;
             btnNuevo.Click += btnNuevo_Click;
             btnGuardar.Click += btnGuardar_Click;
@@ -23,21 +23,70 @@ namespace TiendaRopaPOS.UI
             btnLimpiar.Click += btnLimpiar_Click;
             dgvInventario.CellClick += dgvInventario_CellClick;
             txtBuscar.KeyDown += txtBuscar_KeyDown;
+
+            this.Load += FrmInventario_Load;
         }
 
         private void FrmInventario_Load(object sender, EventArgs e)
         {
+            AplicarEstiloVisual();
+            AplicarAnimaciones();
             CargarProductos();
-            CargarBodegas();
+            CargarBodegaStockGeneral();
             CargarInventario();
             LimpiarCampos();
         }
 
+        private void AplicarEstiloVisual()
+        {
+            dgvInventario.EnableHeadersVisualStyles = false;
+            dgvInventario.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 52, 54);
+            dgvInventario.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvInventario.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvInventario.ColumnHeadersHeight = 34;
+
+            dgvInventario.DefaultCellStyle.BackColor = Color.FromArgb(99, 110, 114);
+            dgvInventario.DefaultCellStyle.ForeColor = Color.White;
+            dgvInventario.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvInventario.DefaultCellStyle.SelectionBackColor = Color.FromArgb(75, 82, 84);
+            dgvInventario.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvInventario.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(75, 82, 84);
+            dgvInventario.GridColor = Color.FromArgb(178, 190, 195);
+            dgvInventario.BorderStyle = BorderStyle.None;
+            dgvInventario.RowHeadersVisible = false;
+            dgvInventario.RowTemplate.Height = 30;
+
+            txtBuscar.Font = new Font("Segoe UI", 10F);
+            txtStock.Font = new Font("Segoe UI", 10F);
+            txtUltimoCosto.Font = new Font("Segoe UI", 10F);
+            txtPrecioVenta.Font = new Font("Segoe UI", 10F);
+
+            cbProducto.Font = new Font("Segoe UI", 10F);
+            cbBodega.Font = new Font("Segoe UI", 10F);
+        }
+
+        private void AplicarAnimaciones()
+        {
+            btnBuscar.MouseEnter += (s, e) => btnBuscar.BackColor = Color.FromArgb(0, 98, 204);
+            btnBuscar.MouseLeave += (s, e) => btnBuscar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnNuevo.MouseEnter += (s, e) => btnNuevo.BackColor = Color.FromArgb(90, 75, 210);
+            btnNuevo.MouseLeave += (s, e) => btnNuevo.BackColor = Color.FromArgb(108, 92, 231);
+
+            btnGuardar.MouseEnter += (s, e) => btnGuardar.BackColor = Color.FromArgb(0, 150, 136);
+            btnGuardar.MouseLeave += (s, e) => btnGuardar.BackColor = Color.FromArgb(0, 184, 148);
+
+            btnActualizar.MouseEnter += (s, e) => btnActualizar.BackColor = Color.FromArgb(0, 98, 204);
+            btnActualizar.MouseLeave += (s, e) => btnActualizar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnLimpiar.MouseEnter += (s, e) => btnLimpiar.BackColor = Color.FromArgb(250, 177, 19);
+            btnLimpiar.MouseLeave += (s, e) => btnLimpiar.BackColor = Color.FromArgb(253, 203, 110);
+        }
+
         private void CargarProductos()
         {
-            Conexion conexion = new Conexion();
-
-            using (SqlConnection cn = conexion.ObtenerConexion())
+            using (SqlConnection cn = new Conexion().ObtenerConexion())
             {
                 string query = @"
                     SELECT IdProducto, Codigo + ' - ' + Descripcion AS Producto
@@ -56,34 +105,35 @@ namespace TiendaRopaPOS.UI
             }
         }
 
-        private void CargarBodegas()
+        private void CargarBodegaStockGeneral()
         {
-            Conexion conexion = new Conexion();
-
-            using (SqlConnection cn = conexion.ObtenerConexion())
+            using (SqlConnection cn = new Conexion().ObtenerConexion())
             {
                 string query = @"
                     SELECT IdBodega, Nombre
                     FROM Bodegas
-                    WHERE Estado = 1
-                    ORDER BY Nombre";
+                    WHERE IdBodega = @IdBodega";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, cn);
+                da.SelectCommand.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
+
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
                 cbBodega.DataSource = dt;
                 cbBodega.DisplayMember = "Nombre";
                 cbBodega.ValueMember = "IdBodega";
-                cbBodega.SelectedIndex = -1;
+
+                if (cbBodega.Items.Count > 0)
+                    cbBodega.SelectedIndex = 0;
+
+                cbBodega.Enabled = false;
             }
         }
 
         private void CargarInventario(string filtro = "")
         {
-            Conexion conexion = new Conexion();
-
-            using (SqlConnection cn = conexion.ObtenerConexion())
+            using (SqlConnection cn = new Conexion().ObtenerConexion())
             {
                 string query = @"
                     SELECT 
@@ -98,19 +148,23 @@ namespace TiendaRopaPOS.UI
                     FROM Inventario i
                     INNER JOIN Productos p ON i.IdProducto = p.IdProducto
                     INNER JOIN Bodegas b ON i.IdBodega = b.IdBodega
-                    WHERE p.Codigo LIKE @Filtro
-                       OR p.Descripcion LIKE @Filtro
-                       OR b.Nombre LIKE @Filtro
-                    ORDER BY p.Descripcion, b.Nombre";
+                    WHERE i.IdBodega = @IdBodega
+                      AND (
+                            p.Codigo LIKE @Filtro
+                            OR p.Descripcion LIKE @Filtro
+                            OR b.Nombre LIKE @Filtro
+                          )
+                    ORDER BY p.Descripcion";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, cn);
+                da.SelectCommand.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
                 da.SelectCommand.Parameters.AddWithValue("@Filtro", "%" + filtro + "%");
 
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
                 dgvInventario.DataSource = dt;
-                dgvInventario.AutoGenerateColumns=true;
+                dgvInventario.AutoGenerateColumns = true;
 
                 if (dgvInventario.Columns.Contains("IdInventario"))
                     dgvInventario.Columns["IdInventario"].Visible = false;
@@ -146,7 +200,10 @@ namespace TiendaRopaPOS.UI
             idInventarioSeleccionado = 0;
 
             cbProducto.SelectedIndex = -1;
-            cbBodega.SelectedIndex = -1;
+
+            if (cbBodega.Items.Count > 0)
+                cbBodega.SelectedIndex = 0;
+
             txtStock.Text = "0.00";
             txtUltimoCosto.Text = "0.00000";
             txtPrecioVenta.Text = "0.00000";
@@ -166,13 +223,6 @@ namespace TiendaRopaPOS.UI
             {
                 MessageBox.Show("Seleccione un producto.");
                 cbProducto.Focus();
-                return false;
-            }
-
-            if (cbBodega.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione una bodega.");
-                cbBodega.Focus();
                 return false;
             }
 
@@ -205,9 +255,7 @@ namespace TiendaRopaPOS.UI
             if (!ValidarCampos())
                 return;
 
-            Conexion conexion = new Conexion();
-
-            using (SqlConnection cn = conexion.ObtenerConexion())
+            using (SqlConnection cn = new Conexion().ObtenerConexion())
             {
                 cn.Open();
 
@@ -218,13 +266,13 @@ namespace TiendaRopaPOS.UI
 
                 SqlCommand cmdVerificar = new SqlCommand(verificar, cn);
                 cmdVerificar.Parameters.AddWithValue("@IdProducto", cbProducto.SelectedValue);
-                cmdVerificar.Parameters.AddWithValue("@IdBodega", cbBodega.SelectedValue);
+                cmdVerificar.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
 
                 int existe = Convert.ToInt32(cmdVerificar.ExecuteScalar());
 
                 if (existe > 0)
                 {
-                    MessageBox.Show("Ya existe inventario para ese producto en esa bodega.");
+                    MessageBox.Show("Ya existe inventario para ese producto en el stock general.");
                     return;
                 }
 
@@ -236,7 +284,7 @@ namespace TiendaRopaPOS.UI
 
                 SqlCommand cmd = new SqlCommand(query, cn);
                 cmd.Parameters.AddWithValue("@IdProducto", cbProducto.SelectedValue);
-                cmd.Parameters.AddWithValue("@IdBodega", cbBodega.SelectedValue);
+                cmd.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
                 cmd.Parameters.AddWithValue("@Stock", Convert.ToDecimal(txtStock.Text.Trim()));
                 cmd.Parameters.AddWithValue("@UltimoCosto", Convert.ToDecimal(txtUltimoCosto.Text.Trim()));
                 cmd.Parameters.AddWithValue("@PrecioVenta", Convert.ToDecimal(txtPrecioVenta.Text.Trim()));
@@ -261,9 +309,7 @@ namespace TiendaRopaPOS.UI
             if (!ValidarCampos())
                 return;
 
-            Conexion conexion = new Conexion();
-
-            using (SqlConnection cn = conexion.ObtenerConexion())
+            using (SqlConnection cn = new Conexion().ObtenerConexion())
             {
                 cn.Open();
 
@@ -276,14 +322,14 @@ namespace TiendaRopaPOS.UI
 
                 SqlCommand cmdVerificar = new SqlCommand(verificar, cn);
                 cmdVerificar.Parameters.AddWithValue("@IdProducto", cbProducto.SelectedValue);
-                cmdVerificar.Parameters.AddWithValue("@IdBodega", cbBodega.SelectedValue);
+                cmdVerificar.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
                 cmdVerificar.Parameters.AddWithValue("@IdInventario", idInventarioSeleccionado);
 
                 int existe = Convert.ToInt32(cmdVerificar.ExecuteScalar());
 
                 if (existe > 0)
                 {
-                    MessageBox.Show("Ya existe otro registro con ese producto y bodega.");
+                    MessageBox.Show("Ya existe otro registro con ese producto en el stock general.");
                     return;
                 }
 
@@ -301,7 +347,7 @@ namespace TiendaRopaPOS.UI
                 SqlCommand cmd = new SqlCommand(query, cn);
                 cmd.Parameters.AddWithValue("@IdInventario", idInventarioSeleccionado);
                 cmd.Parameters.AddWithValue("@IdProducto", cbProducto.SelectedValue);
-                cmd.Parameters.AddWithValue("@IdBodega", cbBodega.SelectedValue);
+                cmd.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
                 cmd.Parameters.AddWithValue("@Stock", Convert.ToDecimal(txtStock.Text.Trim()));
                 cmd.Parameters.AddWithValue("@UltimoCosto", Convert.ToDecimal(txtUltimoCosto.Text.Trim()));
                 cmd.Parameters.AddWithValue("@PrecioVenta", Convert.ToDecimal(txtPrecioVenta.Text.Trim()));
@@ -337,10 +383,10 @@ namespace TiendaRopaPOS.UI
             string descripcion = dgvInventario.Rows[e.RowIndex].Cells["Descripcion"]?.Value?.ToString() ?? "";
             string textoProducto = codigo + " - " + descripcion;
 
-            string bodega = dgvInventario.Rows[e.RowIndex].Cells["Bodega"]?.Value?.ToString() ?? "";
-
             cbProducto.Text = textoProducto;
-            cbBodega.Text = bodega;
+
+            if (cbBodega.Items.Count > 0)
+                cbBodega.SelectedIndex = 0;
 
             txtStock.Text = dgvInventario.Rows[e.RowIndex].Cells["Stock"]?.Value?.ToString() ?? "0.00";
             txtUltimoCosto.Text = dgvInventario.Rows[e.RowIndex].Cells["UltimoCosto"]?.Value?.ToString() ?? "0.00000";

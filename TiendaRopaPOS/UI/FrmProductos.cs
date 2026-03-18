@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 using TiendaRopaPOS.Datos;
 
@@ -14,8 +15,6 @@ namespace TiendaRopaPOS.UI
         {
             InitializeComponent();
 
-            this.Load += FrmProductos_Load;
-
             btnBuscar.Click += btnBuscar_Click;
             btnNuevo.Click += btnNuevo_Click;
             btnGuardar.Click += btnGuardar_Click;
@@ -23,19 +22,68 @@ namespace TiendaRopaPOS.UI
             btnLimpiar.Click += btnLimpiar_Click;
             dgvProductos.CellClick += dgvProductos_CellClick;
             txtBuscar.KeyDown += txtBuscar_KeyDown;
+
+            this.Load += FrmProductos_Load;
         }
 
         private void FrmProductos_Load(object sender, EventArgs e)
         {
+            AplicarEstiloVisual();
+            AplicarAnimaciones();
             CargarUnidades();
             CargarCategorias();
             CargarProductos();
             LimpiarCampos();
         }
 
-        /* =========================
-           CARGAS INICIALES
-        ========================= */
+        private void AplicarEstiloVisual()
+        {
+            dgvProductos.EnableHeadersVisualStyles = false;
+            dgvProductos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 52, 54);
+            dgvProductos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvProductos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvProductos.ColumnHeadersHeight = 34;
+
+            dgvProductos.DefaultCellStyle.BackColor = Color.FromArgb(99, 110, 114);
+            dgvProductos.DefaultCellStyle.ForeColor = Color.White;
+            dgvProductos.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvProductos.DefaultCellStyle.SelectionBackColor = Color.FromArgb(75, 82, 84);
+            dgvProductos.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvProductos.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(75, 82, 84);
+            dgvProductos.GridColor = Color.FromArgb(178, 190, 195);
+            dgvProductos.BorderStyle = BorderStyle.None;
+            dgvProductos.RowHeadersVisible = false;
+            dgvProductos.RowTemplate.Height = 30;
+
+            txtBuscar.Font = new Font("Segoe UI", 10F);
+            txtCodigo.Font = new Font("Segoe UI", 10F);
+            txtDescripcion.Font = new Font("Segoe UI", 10F);
+            txtReferencia.Font = new Font("Segoe UI", 10F);
+            txtPrecioBase.Font = new Font("Segoe UI", 10F);
+
+            cbUnidad.Font = new Font("Segoe UI", 10F);
+            cbCategoria.Font = new Font("Segoe UI", 10F);
+        }
+
+        private void AplicarAnimaciones()
+        {
+            btnBuscar.MouseEnter += (s, e) => btnBuscar.BackColor = Color.FromArgb(0, 98, 204);
+            btnBuscar.MouseLeave += (s, e) => btnBuscar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnNuevo.MouseEnter += (s, e) => btnNuevo.BackColor = Color.FromArgb(90, 75, 210);
+            btnNuevo.MouseLeave += (s, e) => btnNuevo.BackColor = Color.FromArgb(108, 92, 231);
+
+            btnGuardar.MouseEnter += (s, e) => btnGuardar.BackColor = Color.FromArgb(0, 150, 136);
+            btnGuardar.MouseLeave += (s, e) => btnGuardar.BackColor = Color.FromArgb(0, 184, 148);
+
+            btnActualizar.MouseEnter += (s, e) => btnActualizar.BackColor = Color.FromArgb(0, 98, 204);
+            btnActualizar.MouseLeave += (s, e) => btnActualizar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnLimpiar.MouseEnter += (s, e) => btnLimpiar.BackColor = Color.FromArgb(250, 177, 19);
+            btnLimpiar.MouseLeave += (s, e) => btnLimpiar.BackColor = Color.FromArgb(253, 203, 110);
+        }
+
         private void CargarUnidades()
         {
             Conexion conexion = new Conexion();
@@ -110,9 +158,6 @@ namespace TiendaRopaPOS.UI
             }
         }
 
-        /* =========================
-           BUSQUEDA
-        ========================= */
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             CargarProductos(txtBuscar.Text.Trim());
@@ -127,9 +172,6 @@ namespace TiendaRopaPOS.UI
             }
         }
 
-        /* =========================
-           NUEVO / LIMPIAR
-        ========================= */
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             LimpiarCampos();
@@ -160,9 +202,6 @@ namespace TiendaRopaPOS.UI
             txtCodigo.Focus();
         }
 
-        /* =========================
-           GUARDAR
-        ========================= */
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             if (!ValidarCampos())
@@ -213,9 +252,6 @@ namespace TiendaRopaPOS.UI
             LimpiarCampos();
         }
 
-        /* =========================
-           ACTUALIZAR
-        ========================= */
         private void btnActualizar_Click(object sender, EventArgs e)
         {
             if (idProductoSeleccionado == 0)
@@ -284,9 +320,6 @@ namespace TiendaRopaPOS.UI
             LimpiarCampos();
         }
 
-        /* =========================
-           SELECCIONAR EN GRILLA
-        ========================= */
         private void dgvProductos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -317,9 +350,6 @@ namespace TiendaRopaPOS.UI
             btnActualizar.Enabled = true;
         }
 
-        /* =========================
-           VALIDACIONES
-        ========================= */
         private bool ValidarCampos()
         {
             decimal precio;

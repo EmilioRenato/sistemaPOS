@@ -45,53 +45,73 @@
             // 
             // panelTop
             // 
+            this.panelTop.BackColor = System.Drawing.Color.FromArgb(45, 52, 54);
             this.panelTop.Controls.Add(this.btnNuevo);
             this.panelTop.Controls.Add(this.btnBuscar);
             this.panelTop.Controls.Add(this.txtBuscar);
             this.panelTop.Controls.Add(this.lblBuscar);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
+            this.panelTop.Margin = new System.Windows.Forms.Padding(2);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Padding = new System.Windows.Forms.Padding(20, 15, 20, 10);
-            this.panelTop.Size = new System.Drawing.Size(1180, 70);
+            this.panelTop.Padding = new System.Windows.Forms.Padding(15, 12, 15, 8);
+            this.panelTop.Size = new System.Drawing.Size(980, 65);
             this.panelTop.TabIndex = 0;
             // 
             // btnNuevo
             // 
-            this.btnNuevo.Location = new System.Drawing.Point(730, 18);
+            this.btnNuevo.BackColor = System.Drawing.Color.FromArgb(108, 92, 231);
+            this.btnNuevo.FlatAppearance.BorderSize = 0;
+            this.btnNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNuevo.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnNuevo.ForeColor = System.Drawing.Color.White;
+            this.btnNuevo.Location = new System.Drawing.Point(670, 15);
+            this.btnNuevo.Margin = new System.Windows.Forms.Padding(2);
             this.btnNuevo.Name = "btnNuevo";
-            this.btnNuevo.Size = new System.Drawing.Size(100, 32);
+            this.btnNuevo.Size = new System.Drawing.Size(95, 30);
             this.btnNuevo.TabIndex = 3;
-            this.btnNuevo.Text = "Nuevo";
-            this.btnNuevo.UseVisualStyleBackColor = true;
+            this.btnNuevo.Text = "✨ Nuevo";
+            this.btnNuevo.UseVisualStyleBackColor = false;
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(610, 18);
+            this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(9, 132, 227);
+            this.btnBuscar.FlatAppearance.BorderSize = 0;
+            this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
+            this.btnBuscar.Location = new System.Drawing.Point(555, 15);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(100, 32);
+            this.btnBuscar.Size = new System.Drawing.Size(95, 30);
             this.btnBuscar.TabIndex = 2;
-            this.btnBuscar.Text = "Buscar";
-            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Text = "🔎 Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = false;
             // 
             // txtBuscar
             // 
-            this.txtBuscar.Location = new System.Drawing.Point(90, 22);
+            this.txtBuscar.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtBuscar.Location = new System.Drawing.Point(86, 18);
+            this.txtBuscar.Margin = new System.Windows.Forms.Padding(2);
             this.txtBuscar.Name = "txtBuscar";
-            this.txtBuscar.Size = new System.Drawing.Size(500, 22);
+            this.txtBuscar.Size = new System.Drawing.Size(447, 25);
             this.txtBuscar.TabIndex = 1;
             // 
             // lblBuscar
             // 
             this.lblBuscar.AutoSize = true;
-            this.lblBuscar.Location = new System.Drawing.Point(23, 25);
+            this.lblBuscar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBuscar.ForeColor = System.Drawing.Color.White;
+            this.lblBuscar.Location = new System.Drawing.Point(17, 21);
+            this.lblBuscar.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblBuscar.Name = "lblBuscar";
-            this.lblBuscar.Size = new System.Drawing.Size(46, 16);
+            this.lblBuscar.Size = new System.Drawing.Size(54, 19);
             this.lblBuscar.TabIndex = 0;
             this.lblBuscar.Text = "Buscar";
             // 
             // panelFormulario
             // 
+            this.panelFormulario.BackColor = System.Drawing.Color.FromArgb(99, 110, 114);
             this.panelFormulario.Controls.Add(this.chkEstado);
             this.panelFormulario.Controls.Add(this.txtPrecioVenta);
             this.panelFormulario.Controls.Add(this.lblPrecioVenta);
@@ -104,10 +124,11 @@
             this.panelFormulario.Controls.Add(this.cbProducto);
             this.panelFormulario.Controls.Add(this.lblProducto);
             this.panelFormulario.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelFormulario.Location = new System.Drawing.Point(0, 70);
+            this.panelFormulario.Location = new System.Drawing.Point(0, 65);
+            this.panelFormulario.Margin = new System.Windows.Forms.Padding(2);
             this.panelFormulario.Name = "panelFormulario";
-            this.panelFormulario.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
-            this.panelFormulario.Size = new System.Drawing.Size(1180, 160);
+            this.panelFormulario.Padding = new System.Windows.Forms.Padding(15, 8, 15, 8);
+            this.panelFormulario.Size = new System.Drawing.Size(980, 145);
             this.panelFormulario.TabIndex = 1;
             // 
             // chkEstado
@@ -115,163 +136,218 @@
             this.chkEstado.AutoSize = true;
             this.chkEstado.Checked = true;
             this.chkEstado.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEstado.Location = new System.Drawing.Point(900, 103);
+            this.chkEstado.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.chkEstado.ForeColor = System.Drawing.Color.White;
+            this.chkEstado.Location = new System.Drawing.Point(724, 92);
+            this.chkEstado.Margin = new System.Windows.Forms.Padding(2);
             this.chkEstado.Name = "chkEstado";
-            this.chkEstado.Size = new System.Drawing.Size(63, 20);
+            this.chkEstado.Size = new System.Drawing.Size(68, 23);
             this.chkEstado.TabIndex = 10;
             this.chkEstado.Text = "Activo";
             this.chkEstado.UseVisualStyleBackColor = true;
             // 
             // txtPrecioVenta
             // 
-            this.txtPrecioVenta.Location = new System.Drawing.Point(620, 100);
+            this.txtPrecioVenta.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtPrecioVenta.Location = new System.Drawing.Point(500, 88);
+            this.txtPrecioVenta.Margin = new System.Windows.Forms.Padding(2);
             this.txtPrecioVenta.Name = "txtPrecioVenta";
-            this.txtPrecioVenta.Size = new System.Drawing.Size(220, 22);
+            this.txtPrecioVenta.Size = new System.Drawing.Size(176, 25);
             this.txtPrecioVenta.TabIndex = 9;
             // 
             // lblPrecioVenta
             // 
             this.lblPrecioVenta.AutoSize = true;
-            this.lblPrecioVenta.Location = new System.Drawing.Point(520, 103);
+            this.lblPrecioVenta.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblPrecioVenta.ForeColor = System.Drawing.Color.White;
+            this.lblPrecioVenta.Location = new System.Drawing.Point(390, 91);
+            this.lblPrecioVenta.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblPrecioVenta.Name = "lblPrecioVenta";
-            this.lblPrecioVenta.Size = new System.Drawing.Size(87, 16);
+            this.lblPrecioVenta.Size = new System.Drawing.Size(95, 19);
             this.lblPrecioVenta.TabIndex = 8;
             this.lblPrecioVenta.Text = "Precio venta";
             // 
             // txtUltimoCosto
             // 
-            this.txtUltimoCosto.Location = new System.Drawing.Point(220, 100);
+            this.txtUltimoCosto.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtUltimoCosto.Location = new System.Drawing.Point(165, 88);
+            this.txtUltimoCosto.Margin = new System.Windows.Forms.Padding(2);
             this.txtUltimoCosto.Name = "txtUltimoCosto";
-            this.txtUltimoCosto.Size = new System.Drawing.Size(220, 22);
+            this.txtUltimoCosto.Size = new System.Drawing.Size(176, 25);
             this.txtUltimoCosto.TabIndex = 7;
             // 
             // lblUltimoCosto
             // 
             this.lblUltimoCosto.AutoSize = true;
-            this.lblUltimoCosto.Location = new System.Drawing.Point(100, 103);
+            this.lblUltimoCosto.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblUltimoCosto.ForeColor = System.Drawing.Color.White;
+            this.lblUltimoCosto.Location = new System.Drawing.Point(50, 91);
+            this.lblUltimoCosto.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblUltimoCosto.Name = "lblUltimoCosto";
-            this.lblUltimoCosto.Size = new System.Drawing.Size(82, 16);
+            this.lblUltimoCosto.Size = new System.Drawing.Size(93, 19);
             this.lblUltimoCosto.TabIndex = 6;
             this.lblUltimoCosto.Text = "Último costo";
             // 
             // txtStock
             // 
-            this.txtStock.Location = new System.Drawing.Point(900, 40);
+            this.txtStock.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtStock.Location = new System.Drawing.Point(724, 35);
+            this.txtStock.Margin = new System.Windows.Forms.Padding(2);
             this.txtStock.Name = "txtStock";
-            this.txtStock.Size = new System.Drawing.Size(180, 22);
+            this.txtStock.Size = new System.Drawing.Size(160, 25);
             this.txtStock.TabIndex = 5;
             // 
             // lblStock
             // 
             this.lblStock.AutoSize = true;
-            this.lblStock.Location = new System.Drawing.Point(850, 43);
+            this.lblStock.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStock.ForeColor = System.Drawing.Color.White;
+            this.lblStock.Location = new System.Drawing.Point(670, 38);
+            this.lblStock.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblStock.Name = "lblStock";
-            this.lblStock.Size = new System.Drawing.Size(40, 16);
+            this.lblStock.Size = new System.Drawing.Size(45, 19);
             this.lblStock.TabIndex = 4;
             this.lblStock.Text = "Stock";
             // 
             // cbBodega
             // 
             this.cbBodega.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbBodega.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbBodega.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cbBodega.FormattingEnabled = true;
-            this.cbBodega.Location = new System.Drawing.Point(620, 40);
+            this.cbBodega.Location = new System.Drawing.Point(500, 35);
+            this.cbBodega.Margin = new System.Windows.Forms.Padding(2);
             this.cbBodega.Name = "cbBodega";
-            this.cbBodega.Size = new System.Drawing.Size(200, 24);
+            this.cbBodega.Size = new System.Drawing.Size(150, 25);
             this.cbBodega.TabIndex = 3;
             // 
             // lblBodega
             // 
             this.lblBodega.AutoSize = true;
-            this.lblBodega.Location = new System.Drawing.Point(540, 43);
+            this.lblBodega.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBodega.ForeColor = System.Drawing.Color.White;
+            this.lblBodega.Location = new System.Drawing.Point(390, 38);
+            this.lblBodega.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblBodega.Name = "lblBodega";
-            this.lblBodega.Size = new System.Drawing.Size(55, 16);
+            this.lblBodega.Size = new System.Drawing.Size(61, 19);
             this.lblBodega.TabIndex = 2;
             this.lblBodega.Text = "Bodega";
             // 
             // cbProducto
             // 
             this.cbProducto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbProducto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbProducto.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cbProducto.FormattingEnabled = true;
-            this.cbProducto.Location = new System.Drawing.Point(220, 40);
+            this.cbProducto.Location = new System.Drawing.Point(165, 35);
+            this.cbProducto.Margin = new System.Windows.Forms.Padding(2);
             this.cbProducto.Name = "cbProducto";
-            this.cbProducto.Size = new System.Drawing.Size(280, 24);
+            this.cbProducto.Size = new System.Drawing.Size(195, 25);
             this.cbProducto.TabIndex = 1;
             // 
             // lblProducto
             // 
             this.lblProducto.AutoSize = true;
-            this.lblProducto.Location = new System.Drawing.Point(100, 43);
+            this.lblProducto.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblProducto.ForeColor = System.Drawing.Color.White;
+            this.lblProducto.Location = new System.Drawing.Point(50, 38);
+            this.lblProducto.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblProducto.Name = "lblProducto";
-            this.lblProducto.Size = new System.Drawing.Size(61, 16);
+            this.lblProducto.Size = new System.Drawing.Size(68, 19);
             this.lblProducto.TabIndex = 0;
             this.lblProducto.Text = "Producto";
             // 
             // panelBotones
             // 
+            this.panelBotones.BackColor = System.Drawing.Color.FromArgb(223, 230, 233);
             this.panelBotones.Controls.Add(this.btnLimpiar);
             this.panelBotones.Controls.Add(this.btnActualizar);
             this.panelBotones.Controls.Add(this.btnGuardar);
             this.panelBotones.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelBotones.Location = new System.Drawing.Point(0, 230);
+            this.panelBotones.Location = new System.Drawing.Point(0, 210);
+            this.panelBotones.Margin = new System.Windows.Forms.Padding(2);
             this.panelBotones.Name = "panelBotones";
-            this.panelBotones.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
-            this.panelBotones.Size = new System.Drawing.Size(1180, 60);
+            this.panelBotones.Padding = new System.Windows.Forms.Padding(15, 8, 15, 8);
+            this.panelBotones.Size = new System.Drawing.Size(980, 55);
             this.panelBotones.TabIndex = 2;
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(380, 12);
+            this.btnLimpiar.BackColor = System.Drawing.Color.FromArgb(253, 203, 110);
+            this.btnLimpiar.FlatAppearance.BorderSize = 0;
+            this.btnLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnLimpiar.ForeColor = System.Drawing.Color.Black;
+            this.btnLimpiar.Location = new System.Drawing.Point(310, 12);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(110, 32);
+            this.btnLimpiar.Size = new System.Drawing.Size(95, 30);
             this.btnLimpiar.TabIndex = 2;
-            this.btnLimpiar.Text = "Limpiar";
-            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Text = "🧹 Limpiar";
+            this.btnLimpiar.UseVisualStyleBackColor = false;
             // 
             // btnActualizar
             // 
-            this.btnActualizar.Location = new System.Drawing.Point(240, 12);
+            this.btnActualizar.BackColor = System.Drawing.Color.FromArgb(9, 132, 227);
+            this.btnActualizar.FlatAppearance.BorderSize = 0;
+            this.btnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnActualizar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnActualizar.ForeColor = System.Drawing.Color.White;
+            this.btnActualizar.Location = new System.Drawing.Point(170, 12);
+            this.btnActualizar.Margin = new System.Windows.Forms.Padding(2);
             this.btnActualizar.Name = "btnActualizar";
-            this.btnActualizar.Size = new System.Drawing.Size(110, 32);
+            this.btnActualizar.Size = new System.Drawing.Size(110, 30);
             this.btnActualizar.TabIndex = 1;
-            this.btnActualizar.Text = "Actualizar";
-            this.btnActualizar.UseVisualStyleBackColor = true;
+            this.btnActualizar.Text = "♻ Actualizar";
+            this.btnActualizar.UseVisualStyleBackColor = false;
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(100, 12);
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(0, 184, 148);
+            this.btnGuardar.FlatAppearance.BorderSize = 0;
+            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
+            this.btnGuardar.Location = new System.Drawing.Point(30, 12);
+            this.btnGuardar.Margin = new System.Windows.Forms.Padding(2);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(110, 32);
+            this.btnGuardar.Size = new System.Drawing.Size(105, 30);
             this.btnGuardar.TabIndex = 0;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Text = "💾 Guardar";
+            this.btnGuardar.UseVisualStyleBackColor = false;
             // 
             // dgvInventario
             // 
             this.dgvInventario.AllowUserToAddRows = false;
             this.dgvInventario.AllowUserToDeleteRows = false;
             this.dgvInventario.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvInventario.BackgroundColor = System.Drawing.Color.FromArgb(45, 52, 54);
+            this.dgvInventario.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvInventario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvInventario.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvInventario.Location = new System.Drawing.Point(0, 290);
+            this.dgvInventario.Location = new System.Drawing.Point(0, 265);
+            this.dgvInventario.Margin = new System.Windows.Forms.Padding(2);
             this.dgvInventario.MultiSelect = false;
             this.dgvInventario.Name = "dgvInventario";
             this.dgvInventario.ReadOnly = true;
             this.dgvInventario.RowHeadersWidth = 51;
             this.dgvInventario.RowTemplate.Height = 24;
             this.dgvInventario.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvInventario.Size = new System.Drawing.Size(1180, 430);
+            this.dgvInventario.Size = new System.Drawing.Size(980, 335);
             this.dgvInventario.TabIndex = 3;
             // 
             // FrmInventario
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(45, 52, 54);
+            this.ClientSize = new System.Drawing.Size(980, 600);
             this.Controls.Add(this.dgvInventario);
             this.Controls.Add(this.panelBotones);
             this.Controls.Add(this.panelFormulario);
             this.Controls.Add(this.panelTop);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FrmInventario";
-            this.Size = new System.Drawing.Size(1180, 720);
             this.Text = "Inventario";
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();

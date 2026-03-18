@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 using TiendaRopaPOS.Clases;
 using TiendaRopaPOS.Datos;
@@ -12,6 +13,17 @@ namespace TiendaRopaPOS.UI
         {
             InitializeComponent();
             btnIngresar.Click += btnIngresar_Click;
+            btnIngresar.MouseEnter += btnIngresar_MouseEnter;
+            btnIngresar.MouseLeave += btnIngresar_MouseLeave;
+
+            txtUsuario.TextChanged += txtUsuario_TextChanged;
+            txtClave.TextChanged += txtClave_TextChanged;
+        }
+
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+            txtUsuario.Focus();
+            RestaurarEstiloCampos();
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
@@ -19,52 +31,110 @@ namespace TiendaRopaPOS.UI
             string usuario = txtUsuario.Text.Trim();
             string clave = txtClave.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(clave))
+            RestaurarEstiloCampos();
+
+            bool hayError = false;
+
+            if (string.IsNullOrWhiteSpace(usuario))
             {
-                MessageBox.Show("Ingrese usuario y clave.");
+                txtUsuario.BackColor = Color.MistyRose;
+                hayError = true;
+            }
+
+            if (string.IsNullOrWhiteSpace(clave))
+            {
+                txtClave.BackColor = Color.MistyRose;
+                hayError = true;
+            }
+
+            if (hayError)
+            {
+                MessageBox.Show("Ingrese usuario y clave.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            Conexion conexion = new Conexion();
+            lblLoader.Visible = true;
+            btnIngresar.Enabled = false;
+            this.Cursor = Cursors.WaitCursor;
+            Application.DoEvents();
 
-            using (SqlConnection cn = conexion.ObtenerConexion())
+            try
             {
-                string query = @"
-                    SELECT u.IdUsuario, u.IdRol, u.Nombre, u.Apellido, u.Usuario
-                    FROM Usuarios u
-                    WHERE u.Usuario = @Usuario
-                      AND u.Clave = @Clave
-                      AND u.Estado = 1";
+                Conexion conexion = new Conexion();
 
-                SqlCommand cmd = new SqlCommand(query, cn);
-                cmd.Parameters.AddWithValue("@Usuario", usuario);
-                cmd.Parameters.AddWithValue("@Clave", clave);
-
-                cn.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                if (dr.Read())
+                using (SqlConnection cn = conexion.ObtenerConexion())
                 {
-                    SesionUsuario.IdUsuario = Convert.ToInt32(dr["IdUsuario"]);
-                    SesionUsuario.IdRol = Convert.ToInt32(dr["IdRol"]);
-                    SesionUsuario.Nombre = dr["Nombre"].ToString();
-                    SesionUsuario.Apellido = dr["Apellido"].ToString();
-                    SesionUsuario.Usuario = dr["Usuario"].ToString();
+                    string query = @"
+                        SELECT u.IdUsuario, u.IdRol, u.Nombre, u.Apellido, u.Usuario
+                        FROM Usuarios u
+                        WHERE u.Usuario = @Usuario
+                          AND u.Clave = @Clave
+                          AND u.Estado = 1";
 
-                    FrmMenuPrincipal menu = new FrmMenuPrincipal();
-                    menu.Show();
-                    this.Hide();
+                    SqlCommand cmd = new SqlCommand(query, cn);
+                    cmd.Parameters.AddWithValue("@Usuario", usuario);
+                    cmd.Parameters.AddWithValue("@Clave", clave);
+
+                    cn.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    if (dr.Read())
+                    {
+                        SesionUsuario.IdUsuario = Convert.ToInt32(dr["IdUsuario"]);
+                        SesionUsuario.IdRol = Convert.ToInt32(dr["IdRol"]);
+                        SesionUsuario.Nombre = dr["Nombre"].ToString();
+                        SesionUsuario.Apellido = dr["Apellido"].ToString();
+                        SesionUsuario.Usuario = dr["Usuario"].ToString();
+
+                        FrmMenuPrincipal menu = new FrmMenuPrincipal();
+                        menu.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Usuario o clave incorrectos.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Usuario o clave incorrectos.");
-                }
+            }
+            finally
+            {
+                lblLoader.Visible = false;
+                btnIngresar.Enabled = true;
+                this.Cursor = Cursors.Default;
             }
         }
 
-        private void FrmLogin_Load(object sender, EventArgs e)
+        private void chkVer_CheckedChanged(object sender, EventArgs e)
         {
+            txtClave.UseSystemPasswordChar = !chkVer.Checked;
+        }
 
+        private void btnIngresar_MouseEnter(object sender, EventArgs e)
+        {
+            btnIngresar.BackColor = Color.FromArgb(30, 140, 50);
+        }
+
+        private void btnIngresar_MouseLeave(object sender, EventArgs e)
+        {
+            btnIngresar.BackColor = Color.FromArgb(40, 167, 69);
+        }
+
+        private void txtUsuario_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtUsuario.Text))
+                txtUsuario.BackColor = Color.White;
+        }
+
+        private void txtClave_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtClave.Text))
+                txtClave.BackColor = Color.White;
+        }
+
+        private void RestaurarEstiloCampos()
+        {
+            txtUsuario.BackColor = Color.White;
+            txtClave.BackColor = Color.White;
         }
     }
 }

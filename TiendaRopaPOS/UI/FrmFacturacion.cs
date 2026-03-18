@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Media;
+using System.Text;
 using System.Windows.Forms;
 using TiendaRopaPOS.Clases;
 using TiendaRopaPOS.Datos;
@@ -19,6 +21,7 @@ namespace TiendaRopaPOS.UI
         {
             InitializeComponent();
 
+            cbBodegaVenta.Enabled = false;
             this.Load += FrmFacturacion_Load;
 
             btnBuscarCliente.Click += btnBuscarCliente_Click;
@@ -42,7 +45,23 @@ namespace TiendaRopaPOS.UI
             CargarCodigosProductos();
             MostrarVendedorActivo();
             ConfigurarDetalleVenta();
+            SeleccionarCajaDeLaMaquina();
             LimpiarVenta();
+            AplicarEstiloVisual();
+            AplicarAnimaciones();
+            AplicarColorDocumento();
+            ConfigurarModoCajero();
+        }
+
+        private void SeleccionarCajaDeLaMaquina()
+        {
+            if (SesionUsuario.IdCajaEmision <= 0)
+            {
+                MessageBox.Show("Esta máquina no tiene punto de emisión configurado.");
+                return;
+            }
+
+            cbBodegaVenta.SelectedValue = SesionUsuario.IdCajaEmision;
         }
 
         private void CargarPuntosEmision()
@@ -55,18 +74,18 @@ namespace TiendaRopaPOS.UI
                 Nombre + ' - Est: ' + ISNULL(Establecimiento,'') + ' / Pto: ' + ISNULL(PuntoEmision,'') AS PuntoEmision
             FROM Bodegas
             WHERE Estado = 1
+              AND IdBodega <> @IdBodegaStockGeneral
             ORDER BY Nombre";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, cn);
+                da.SelectCommand.Parameters.AddWithValue("@IdBodegaStockGeneral", ConfiguracionSistema.IdBodegaStockGeneral);
+
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
                 cbBodegaVenta.DataSource = dt;
                 cbBodegaVenta.DisplayMember = "PuntoEmision";
                 cbBodegaVenta.ValueMember = "IdBodega";
-
-                if (cbBodegaVenta.Items.Count > 0)
-                    cbBodegaVenta.SelectedIndex = 0;
             }
         }
 
@@ -179,6 +198,7 @@ namespace TiendaRopaPOS.UI
             lblCambio.Text = "0.00";
 
             rbFactura.Checked = true;
+            lblVentaOk.Text = "";
 
             CalcularTotalGeneral();
             ActualizarEstadoMontoRecibido();
@@ -218,13 +238,21 @@ namespace TiendaRopaPOS.UI
             if (e.KeyCode == Keys.Enter)
             {
                 BuscarClientePorDocumento();
+                AnimarBusquedaCliente();
                 e.SuppressKeyPress = true;
+
+                if (dgvDetalleVenta.Rows.Count > 0)
+                {
+                    dgvDetalleVenta.CurrentCell = dgvDetalleVenta.Rows[0].Cells["Codigo"];
+                    dgvDetalleVenta.BeginEdit(true);
+                }
             }
         }
 
         private void btnBuscarCliente_Click(object sender, EventArgs e)
         {
             BuscarClientePorDocumento();
+            AnimarBusquedaCliente();
         }
 
         private void BuscarClientePorDocumento()
@@ -256,6 +284,7 @@ namespace TiendaRopaPOS.UI
                 {
                     idClienteActual = Convert.ToInt32(dr["IdCliente"]);
                     lblNombreCliente.Text = dr["Nombres"].ToString();
+                    SystemSounds.Beep.Play();
                 }
                 else
                 {
@@ -368,8 +397,14 @@ namespace TiendaRopaPOS.UI
                     {
                         dgvDetalleVenta.CurrentCell = dgvDetalleVenta.Rows[ultimaFila].Cells["Codigo"];
                         dgvDetalleVenta.BeginEdit(true);
+                        SystemSounds.Beep.Play();
                     }
                 }
+            }
+
+            if (e.KeyCode == Keys.F9)
+            {
+                btnGuardarVenta.PerformClick();
             }
         }
 
@@ -446,6 +481,7 @@ namespace TiendaRopaPOS.UI
                     RecalcularFila(fila);
                     AgregarFilaVaciaSiNoExiste();
                     CalcularTotalGeneral();
+                    SystemSounds.Beep.Play();
                 }
                 else
                 {
@@ -532,6 +568,7 @@ namespace TiendaRopaPOS.UI
                 txtMontoRecibido.Text = total.ToString("0.00");
 
             CalcularCambio();
+            AplicarColorDocumento();
         }
 
         private void CalcularCambio()
@@ -586,19 +623,19 @@ namespace TiendaRopaPOS.UI
         }
 
         private int InsertarVenta(
-    SqlConnection cn,
-    SqlTransaction tx,
-    string numeroDocumento,
-    int idCliente,
-    int idUsuario,
-    int idVendedor,
-    int idMetodoPago,
-    int idCajaEmision,
-    decimal subtotal,
-    decimal descuento,
-    decimal iva,
-    decimal total,
-    string tipoDocumento)
+            SqlConnection cn,
+            SqlTransaction tx,
+            string numeroDocumento,
+            int idCliente,
+            int idUsuario,
+            int idVendedor,
+            int idMetodoPago,
+            int idCajaEmision,
+            decimal subtotal,
+            decimal descuento,
+            decimal iva,
+            decimal total,
+            string tipoDocumento)
         {
             string query = @"
     INSERT INTO Ventas
@@ -649,7 +686,7 @@ namespace TiendaRopaPOS.UI
             cmd.Parameters.AddWithValue("@IdVendedor", idVendedor == 0 ? (object)DBNull.Value : idVendedor);
             cmd.Parameters.AddWithValue("@IdMetodoPago", idMetodoPago);
             cmd.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
-            cmd.Parameters.AddWithValue("@IdCajaEmision", idCajaEmision);
+            cmd.Parameters.AddWithValue("@IdCajaEmision", SesionUsuario.IdCajaEmision);
             cmd.Parameters.AddWithValue("@Subtotal", subtotal);
             cmd.Parameters.AddWithValue("@Descuento", descuento);
             cmd.Parameters.AddWithValue("@Iva", iva);
@@ -707,7 +744,7 @@ namespace TiendaRopaPOS.UI
             SqlCommand cmd = new SqlCommand(query, cn, tx);
             cmd.Parameters.AddWithValue("@IdVenta", idVenta);
             cmd.Parameters.AddWithValue("@IdProducto", idProducto);
-            cmd.Parameters.AddWithValue("@IdBodega", idBodega);
+            cmd.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
             cmd.Parameters.AddWithValue("@Cantidad", cantidad);
             cmd.Parameters.AddWithValue("@PrecioUnitario", precioUnitario);
             cmd.Parameters.AddWithValue("@Descuento", descuento);
@@ -734,7 +771,7 @@ namespace TiendaRopaPOS.UI
 
             SqlCommand cmd = new SqlCommand(query, cn, tx);
             cmd.Parameters.AddWithValue("@IdProducto", idProducto);
-            cmd.Parameters.AddWithValue("@IdBodega", idBodega);
+            cmd.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
 
             object result = cmd.ExecuteScalar();
 
@@ -764,7 +801,7 @@ namespace TiendaRopaPOS.UI
             SqlCommand cmd = new SqlCommand(query, cn, tx);
             cmd.Parameters.AddWithValue("@Cantidad", cantidad);
             cmd.Parameters.AddWithValue("@IdProducto", idProducto);
-            cmd.Parameters.AddWithValue("@IdBodega", idBodega);
+            cmd.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
 
             cmd.ExecuteNonQuery();
         }
@@ -816,14 +853,37 @@ namespace TiendaRopaPOS.UI
 
             cmd.ExecuteNonQuery();
         }
+
         private void ImprimirComprobante(int idVenta, string tipoDocumento)
         {
-            MessageBox.Show(
-                $"Aquí irá la impresión de {tipoDocumento}.\nID Venta: {idVenta}",
-                "Impresión",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("==================================");
+            sb.AppendLine("         INVENTARIO SASA          ");
+            sb.AppendLine("==================================");
+            sb.AppendLine("Documento: " + tipoDocumento);
+            sb.AppendLine("Venta ID  : " + idVenta);
+            sb.AppendLine("Cliente   : " + lblNombreCliente.Text);
+            sb.AppendLine("Vendedor  : " + lblVendedorActivo.Text);
+            sb.AppendLine("----------------------------------");
+
+            foreach (DataRow row in dtDetalle.Rows)
+            {
+                if (row["IdProducto"] == DBNull.Value) continue;
+
+                sb.AppendLine((row["Descripcion"]?.ToString() ?? "").PadRight(22).Substring(0, Math.Min(22, (row["Descripcion"]?.ToString() ?? "").Length)));
+                sb.AppendLine("  " + row["Cantidad"] + " x " + Convert.ToDecimal(row["Precio"]).ToString("0.00")
+                    + " = " + Convert.ToDecimal(row["Subtotal"]).ToString("0.00"));
+            }
+
+            sb.AppendLine("----------------------------------");
+            sb.AppendLine("SUBTOTAL: " + lblSubtotalGeneral.Text.PadLeft(18));
+            sb.AppendLine("IVA     : " + lblIva.Text.PadLeft(18));
+            sb.AppendLine("TOTAL   : " + lblTotalGeneral.Text.PadLeft(18));
+            sb.AppendLine("==================================");
+            sb.AppendLine("   Gracias por su compra");
+            sb.AppendLine("==================================");
+
+            MessageBox.Show(sb.ToString(), "Ticket estilo Supermaxi", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnGuardarVenta_Click(object sender, EventArgs e)
@@ -981,6 +1041,8 @@ namespace TiendaRopaPOS.UI
                             }
 
                             tx.Commit();
+                            SystemSounds.Asterisk.Play();
+                            MostrarVentaCompletadaRapida();
 
                             DialogResult resultado = MessageBox.Show(
                                 $"{tipoDocumento} guardada correctamente.\n\n" +
@@ -998,6 +1060,12 @@ namespace TiendaRopaPOS.UI
                             }
 
                             LimpiarVenta();
+
+                            if (dgvDetalleVenta.Rows.Count > 0)
+                            {
+                                dgvDetalleVenta.CurrentCell = dgvDetalleVenta.Rows[0].Cells["Codigo"];
+                                dgvDetalleVenta.BeginEdit(true);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -1013,9 +1081,162 @@ namespace TiendaRopaPOS.UI
             }
         }
 
+        private void AplicarEstiloVisual()
+        {
+            dgvDetalleVenta.EnableHeadersVisualStyles = false;
+            dgvDetalleVenta.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(45, 52, 54);
+            dgvDetalleVenta.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            dgvDetalleVenta.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dgvDetalleVenta.ColumnHeadersHeight = 34;
+
+            dgvDetalleVenta.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(99, 110, 114);
+            dgvDetalleVenta.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            dgvDetalleVenta.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dgvDetalleVenta.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(99, 110, 114);
+            dgvDetalleVenta.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
+            dgvDetalleVenta.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(75, 82, 84);
+            dgvDetalleVenta.RowTemplate.Height = 32;
+            dgvDetalleVenta.GridColor = System.Drawing.Color.FromArgb(178, 190, 195);
+            dgvDetalleVenta.BorderStyle = BorderStyle.None;
+            dgvDetalleVenta.RowHeadersVisible = false;
+
+            txtDocumentoCliente.Font = new System.Drawing.Font("Segoe UI", 10F);
+            txtMontoRecibido.Font = new System.Drawing.Font("Segoe UI", 10F);
+
+            btnBuscarCliente.FlatStyle = FlatStyle.Flat;
+            btnBuscarCliente.FlatAppearance.BorderSize = 0;
+            btnGuardarVenta.FlatStyle = FlatStyle.Flat;
+            btnGuardarVenta.FlatAppearance.BorderSize = 0;
+            btnLimpiarVenta.FlatStyle = FlatStyle.Flat;
+            btnLimpiarVenta.FlatAppearance.BorderSize = 0;
+            btnQuitarFila.FlatStyle = FlatStyle.Flat;
+            btnQuitarFila.FlatAppearance.BorderSize = 0;
+        }
+
+        private void AplicarAnimaciones()
+        {
+            btnGuardarVenta.MouseEnter += (s, e) =>
+            {
+                btnGuardarVenta.BackColor = System.Drawing.Color.FromArgb(0, 150, 136);
+            };
+
+            btnGuardarVenta.MouseLeave += (s, e) =>
+            {
+                btnGuardarVenta.BackColor = System.Drawing.Color.FromArgb(0, 184, 148);
+            };
+
+            btnLimpiarVenta.MouseEnter += (s, e) =>
+            {
+                btnLimpiarVenta.BackColor = System.Drawing.Color.FromArgb(250, 177, 19);
+            };
+
+            btnLimpiarVenta.MouseLeave += (s, e) =>
+            {
+                btnLimpiarVenta.BackColor = System.Drawing.Color.FromArgb(253, 203, 110);
+            };
+
+            btnQuitarFila.MouseEnter += (s, e) =>
+            {
+                btnQuitarFila.BackColor = System.Drawing.Color.FromArgb(200, 30, 35);
+            };
+
+            btnQuitarFila.MouseLeave += (s, e) =>
+            {
+                btnQuitarFila.BackColor = System.Drawing.Color.FromArgb(214, 48, 49);
+            };
+        }
+
+        private void AplicarColorDocumento()
+        {
+            if (rbFactura.Checked)
+            {
+                lblTotalGeneral.BackColor = System.Drawing.Color.FromArgb(0, 184, 148);
+                lblTotalGeneral.ForeColor = System.Drawing.Color.White;
+            }
+
+            if (rbNotaVenta.Checked)
+            {
+                lblTotalGeneral.BackColor = System.Drawing.Color.FromArgb(9, 132, 227);
+                lblTotalGeneral.ForeColor = System.Drawing.Color.White;
+            }
+
+            if (rbProforma.Checked)
+            {
+                lblTotalGeneral.BackColor = System.Drawing.Color.FromArgb(230, 126, 34);
+                lblTotalGeneral.ForeColor = System.Drawing.Color.White;
+            }
+        }
+
+        private void AnimarBusquedaCliente()
+        {
+            txtDocumentoCliente.BackColor = System.Drawing.Color.FromArgb(223, 230, 233);
+
+            Timer t = new Timer();
+            t.Interval = 300;
+
+            t.Tick += (s, e) =>
+            {
+                txtDocumentoCliente.BackColor = System.Drawing.Color.White;
+                t.Stop();
+                t.Dispose();
+            };
+
+            t.Start();
+        }
+
+        private void MostrarVentaCompletadaRapida()
+        {
+            lblVentaOk.Text = "✔ Venta completada";
+            Timer t = new Timer();
+            t.Interval = 1000;
+
+            t.Tick += (s, e) =>
+            {
+                lblVentaOk.Text = "";
+                t.Stop();
+                t.Dispose();
+            };
+
+            t.Start();
+        }
+
+        private void ConfigurarModoCajero()
+        {
+            rbFactura.CheckedChanged += (s, e) => AplicarColorDocumento();
+            rbNotaVenta.CheckedChanged += (s, e) => AplicarColorDocumento();
+            rbProforma.CheckedChanged += (s, e) => AplicarColorDocumento();
+
+            this.KeyPreview = true;
+            this.KeyDown += FrmFacturacion_KeyDown;
+        }
+
+        private void FrmFacturacion_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F2)
+            {
+                txtDocumentoCliente.Focus();
+                txtDocumentoCliente.SelectAll();
+            }
+            else if (e.KeyCode == Keys.F4)
+            {
+                if (dgvDetalleVenta.Rows.Count > 0)
+                {
+                    dgvDetalleVenta.CurrentCell = dgvDetalleVenta.Rows[0].Cells["Codigo"];
+                    dgvDetalleVenta.BeginEdit(true);
+                }
+            }
+            else if (e.KeyCode == Keys.F9)
+            {
+                btnGuardarVenta.PerformClick();
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                btnLimpiarVenta.PerformClick();
+            }
+        }
+
         private void FrmFacturacion_Load_1(object sender, EventArgs e)
         {
-
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
+using System.Drawing;
 using System.Windows.Forms;
 using TiendaRopaPOS.Datos;
 
@@ -18,14 +18,49 @@ namespace TiendaRopaPOS.UI
             btnRegistrarPago.Click += btnRegistrarPago_Click;
             dgvComprasPendientes.CellClick += dgvComprasPendientes_CellClick;
             txtBuscar.KeyDown += txtBuscar_KeyDown;
+
+            dgvComprasPendientes.CellFormatting += dgvComprasPendientes_CellFormatting;
         }
 
         private void FrmPagosCompras_Load(object sender, EventArgs e)
         {
+            AplicarEstiloVisual();
+            AplicarAnimaciones();
+
             CargarMetodosPago();
             CargarComprasPendientes();
             txtSaldoPendiente.Text = "0.00";
             txtValorPagar.Text = "0.00";
+        }
+
+        private void AplicarEstiloVisual()
+        {
+            dgvComprasPendientes.EnableHeadersVisualStyles = false;
+            dgvComprasPendientes.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 52, 54);
+            dgvComprasPendientes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvComprasPendientes.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvComprasPendientes.ColumnHeadersHeight = 34;
+
+            dgvComprasPendientes.DefaultCellStyle.BackColor = Color.FromArgb(99, 110, 114);
+            dgvComprasPendientes.DefaultCellStyle.ForeColor = Color.White;
+            dgvComprasPendientes.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvComprasPendientes.DefaultCellStyle.SelectionBackColor = Color.FromArgb(75, 82, 84);
+            dgvComprasPendientes.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvComprasPendientes.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(75, 82, 84);
+            dgvComprasPendientes.GridColor = Color.FromArgb(178, 190, 195);
+            dgvComprasPendientes.BorderStyle = BorderStyle.None;
+            dgvComprasPendientes.RowHeadersVisible = false;
+            dgvComprasPendientes.RowTemplate.Height = 30;
+        }
+
+        private void AplicarAnimaciones()
+        {
+            btnBuscar.MouseEnter += (s, e) => btnBuscar.BackColor = Color.FromArgb(0, 98, 204);
+            btnBuscar.MouseLeave += (s, e) => btnBuscar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnRegistrarPago.MouseEnter += (s, e) => btnRegistrarPago.BackColor = Color.FromArgb(0, 150, 136);
+            btnRegistrarPago.MouseLeave += (s, e) => btnRegistrarPago.BackColor = Color.FromArgb(0, 184, 148);
         }
 
         private void CargarMetodosPago()
@@ -111,6 +146,9 @@ namespace TiendaRopaPOS.UI
                 if (dgvComprasPendientes.Columns.Contains("NumeroDocumento"))
                     dgvComprasPendientes.Columns["NumeroDocumento"].HeaderText = "Documento";
 
+                if (dgvComprasPendientes.Columns.Contains("Proveedor"))
+                    dgvComprasPendientes.Columns["Proveedor"].HeaderText = "Proveedor";
+
                 if (dgvComprasPendientes.Columns.Contains("SaldoPendiente"))
                     dgvComprasPendientes.Columns["SaldoPendiente"].HeaderText = "Saldo";
 
@@ -120,12 +158,59 @@ namespace TiendaRopaPOS.UI
                 if (dgvComprasPendientes.Columns.Contains("FechaVencimiento"))
                     dgvComprasPendientes.Columns["FechaVencimiento"].HeaderText = "Vence";
 
+                if (dgvComprasPendientes.Columns.Contains("EstadoPago"))
+                    dgvComprasPendientes.Columns["EstadoPago"].HeaderText = "Pago";
+
                 foreach (string col in new[] { "Total", "Pagado", "SaldoPendiente" })
                 {
                     if (dgvComprasPendientes.Columns.Contains(col))
                         dgvComprasPendientes.Columns[col].DefaultCellStyle.Format = "0.00";
                 }
             }
+        }
+
+        private void dgvComprasPendientes_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            if (!dgvComprasPendientes.Columns.Contains("EstadoPago"))
+                return;
+
+            var row = dgvComprasPendientes.Rows[e.RowIndex];
+
+            string estadoPago = row.Cells["EstadoPago"].Value?.ToString().Trim().ToUpper() ?? "";
+            decimal saldo = 0m;
+            DateTime fechaVencimiento = DateTime.MinValue;
+
+            if (row.Cells["SaldoPendiente"].Value != null)
+                decimal.TryParse(row.Cells["SaldoPendiente"].Value.ToString(), out saldo);
+
+            if (row.Cells["FechaVencimiento"].Value != null && row.Cells["FechaVencimiento"].Value != DBNull.Value)
+                DateTime.TryParse(row.Cells["FechaVencimiento"].Value.ToString(), out fechaVencimiento);
+
+            if (estadoPago == "PAGADA")
+            {
+                row.DefaultCellStyle.BackColor = Color.Honeydew;
+                row.DefaultCellStyle.ForeColor = Color.DarkGreen;
+                row.DefaultCellStyle.SelectionBackColor = Color.SeaGreen;
+                row.DefaultCellStyle.SelectionForeColor = Color.White;
+                return;
+            }
+
+            if (fechaVencimiento != DateTime.MinValue && fechaVencimiento.Date < DateTime.Today && saldo > 0)
+            {
+                row.DefaultCellStyle.BackColor = Color.MistyRose;
+                row.DefaultCellStyle.ForeColor = Color.DarkRed;
+                row.DefaultCellStyle.SelectionBackColor = Color.IndianRed;
+                row.DefaultCellStyle.SelectionForeColor = Color.White;
+                return;
+            }
+
+            row.DefaultCellStyle.BackColor = Color.LemonChiffon;
+            row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
+            row.DefaultCellStyle.SelectionBackColor = Color.Goldenrod;
+            row.DefaultCellStyle.SelectionForeColor = Color.White;
         }
 
         private void dgvComprasPendientes_CellClick(object sender, DataGridViewCellEventArgs e)

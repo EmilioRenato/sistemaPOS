@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 using TiendaRopaPOS.Datos;
 
@@ -14,8 +15,6 @@ namespace TiendaRopaPOS.UI
         {
             InitializeComponent();
 
-            this.Load += FrmVendedores_Load;
-
             btnBuscar.Click += btnBuscar_Click;
             btnNuevo.Click += btnNuevo_Click;
             btnGuardar.Click += btnGuardar_Click;
@@ -24,12 +23,62 @@ namespace TiendaRopaPOS.UI
 
             txtBuscar.KeyDown += txtBuscar_KeyDown;
             dgvVendedores.CellClick += dgvVendedores_CellClick;
+
+            this.Load += FrmVendedores_Load;
         }
 
         private void FrmVendedores_Load(object sender, EventArgs e)
         {
+            AplicarEstiloVisual();
+            AplicarAnimaciones();
             CargarVendedores();
             LimpiarCampos();
+        }
+
+        private void AplicarEstiloVisual()
+        {
+            dgvVendedores.EnableHeadersVisualStyles = false;
+            dgvVendedores.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 52, 54);
+            dgvVendedores.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvVendedores.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvVendedores.ColumnHeadersHeight = 34;
+
+            dgvVendedores.DefaultCellStyle.BackColor = Color.FromArgb(99, 110, 114);
+            dgvVendedores.DefaultCellStyle.ForeColor = Color.White;
+            dgvVendedores.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvVendedores.DefaultCellStyle.SelectionBackColor = Color.FromArgb(75, 82, 84);
+            dgvVendedores.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvVendedores.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(75, 82, 84);
+            dgvVendedores.GridColor = Color.FromArgb(178, 190, 195);
+            dgvVendedores.BorderStyle = BorderStyle.None;
+            dgvVendedores.RowHeadersVisible = false;
+            dgvVendedores.RowTemplate.Height = 30;
+
+            txtBuscar.Font = new Font("Segoe UI", 10F);
+            txtNombre.Font = new Font("Segoe UI", 10F);
+            txtCodigoVendedor.Font = new Font("Segoe UI", 10F);
+            txtDocumento.Font = new Font("Segoe UI", 10F);
+            txtAlias.Font = new Font("Segoe UI", 10F);
+            txtComision.Font = new Font("Segoe UI", 10F);
+        }
+
+        private void AplicarAnimaciones()
+        {
+            btnBuscar.MouseEnter += (s, e) => btnBuscar.BackColor = Color.FromArgb(0, 98, 204);
+            btnBuscar.MouseLeave += (s, e) => btnBuscar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnNuevo.MouseEnter += (s, e) => btnNuevo.BackColor = Color.FromArgb(90, 75, 210);
+            btnNuevo.MouseLeave += (s, e) => btnNuevo.BackColor = Color.FromArgb(108, 92, 231);
+
+            btnGuardar.MouseEnter += (s, e) => btnGuardar.BackColor = Color.FromArgb(0, 150, 136);
+            btnGuardar.MouseLeave += (s, e) => btnGuardar.BackColor = Color.FromArgb(0, 184, 148);
+
+            btnActualizar.MouseEnter += (s, e) => btnActualizar.BackColor = Color.FromArgb(0, 98, 204);
+            btnActualizar.MouseLeave += (s, e) => btnActualizar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnLimpiar.MouseEnter += (s, e) => btnLimpiar.BackColor = Color.FromArgb(250, 177, 19);
+            btnLimpiar.MouseLeave += (s, e) => btnLimpiar.BackColor = Color.FromArgb(253, 203, 110);
         }
 
         private void txtBuscar_KeyDown(object sender, KeyEventArgs e)
@@ -278,14 +327,20 @@ namespace TiendaRopaPOS.UI
             if (e.RowIndex < 0)
                 return;
 
-            idVendedorSeleccionado = Convert.ToInt32(dgvVendedores.Rows[e.RowIndex].Cells["IdVendedor"].Value);
+            object valorId = dgvVendedores.Rows[e.RowIndex].Cells["IdVendedor"].Value;
 
-            txtNombre.Text = dgvVendedores.Rows[e.RowIndex].Cells["Nombre"].Value.ToString();
-            txtCodigoVendedor.Text = dgvVendedores.Rows[e.RowIndex].Cells["CodigoVendedor"].Value.ToString();
-            txtDocumento.Text = dgvVendedores.Rows[e.RowIndex].Cells["Documento"].Value?.ToString() ?? "";
-            txtAlias.Text = dgvVendedores.Rows[e.RowIndex].Cells["Alias"].Value?.ToString() ?? "";
-            txtComision.Text = dgvVendedores.Rows[e.RowIndex].Cells["Comision"].Value.ToString();
-            chkEstado.Checked = dgvVendedores.Rows[e.RowIndex].Cells["Estado"].Value.ToString() == "ACTIVO";
+            if (valorId == null || valorId == DBNull.Value)
+                return;
+
+            if (!int.TryParse(valorId.ToString(), out idVendedorSeleccionado))
+                return;
+
+            txtNombre.Text = dgvVendedores.Rows[e.RowIndex].Cells["Nombre"]?.Value?.ToString() ?? "";
+            txtCodigoVendedor.Text = dgvVendedores.Rows[e.RowIndex].Cells["CodigoVendedor"]?.Value?.ToString() ?? "";
+            txtDocumento.Text = dgvVendedores.Rows[e.RowIndex].Cells["Documento"]?.Value?.ToString() ?? "";
+            txtAlias.Text = dgvVendedores.Rows[e.RowIndex].Cells["Alias"]?.Value?.ToString() ?? "";
+            txtComision.Text = dgvVendedores.Rows[e.RowIndex].Cells["Comision"]?.Value?.ToString() ?? "0.00000";
+            chkEstado.Checked = (dgvVendedores.Rows[e.RowIndex].Cells["Estado"]?.Value?.ToString() ?? "") == "ACTIVO";
 
             btnGuardar.Enabled = false;
             btnActualizar.Enabled = true;

@@ -47,6 +47,7 @@
             // 
             // panelTop
             // 
+            this.panelTop.BackColor = System.Drawing.Color.FromArgb(45, 52, 54);
             this.panelTop.Controls.Add(this.btnNuevo);
             this.panelTop.Controls.Add(this.btnBuscar);
             this.panelTop.Controls.Add(this.txtBuscar);
@@ -60,40 +61,54 @@
             // 
             // btnNuevo
             // 
+            this.btnNuevo.BackColor = System.Drawing.Color.FromArgb(108, 92, 231);
+            this.btnNuevo.FlatAppearance.BorderSize = 0;
+            this.btnNuevo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNuevo.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnNuevo.ForeColor = System.Drawing.Color.White;
             this.btnNuevo.Location = new System.Drawing.Point(730, 18);
             this.btnNuevo.Name = "btnNuevo";
-            this.btnNuevo.Size = new System.Drawing.Size(100, 32);
+            this.btnNuevo.Size = new System.Drawing.Size(110, 32);
             this.btnNuevo.TabIndex = 3;
-            this.btnNuevo.Text = "Nuevo";
-            this.btnNuevo.UseVisualStyleBackColor = true;
+            this.btnNuevo.Text = "✨ Nuevo";
+            this.btnNuevo.UseVisualStyleBackColor = false;
             // 
             // btnBuscar
             // 
+            this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(9, 132, 227);
+            this.btnBuscar.FlatAppearance.BorderSize = 0;
+            this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Location = new System.Drawing.Point(610, 18);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(100, 32);
             this.btnBuscar.TabIndex = 2;
-            this.btnBuscar.Text = "Buscar";
-            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Text = "🔎 Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = false;
             // 
             // txtBuscar
             // 
+            this.txtBuscar.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtBuscar.Location = new System.Drawing.Point(90, 22);
             this.txtBuscar.Name = "txtBuscar";
-            this.txtBuscar.Size = new System.Drawing.Size(500, 22);
+            this.txtBuscar.Size = new System.Drawing.Size(500, 25);
             this.txtBuscar.TabIndex = 1;
             // 
             // lblBuscar
             // 
             this.lblBuscar.AutoSize = true;
+            this.lblBuscar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBuscar.ForeColor = System.Drawing.Color.White;
             this.lblBuscar.Location = new System.Drawing.Point(23, 25);
             this.lblBuscar.Name = "lblBuscar";
-            this.lblBuscar.Size = new System.Drawing.Size(46, 16);
+            this.lblBuscar.Size = new System.Drawing.Size(54, 19);
             this.lblBuscar.TabIndex = 0;
             this.lblBuscar.Text = "Buscar";
             // 
             // panelFormulario
             // 
+            this.panelFormulario.BackColor = System.Drawing.Color.FromArgb(99, 110, 114);
             this.panelFormulario.Controls.Add(this.chkEstado);
             this.panelFormulario.Controls.Add(this.txtPrecioBase);
             this.panelFormulario.Controls.Add(this.lblPrecioBase);
@@ -119,115 +134,138 @@
             this.chkEstado.AutoSize = true;
             this.chkEstado.Checked = true;
             this.chkEstado.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkEstado.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.chkEstado.ForeColor = System.Drawing.Color.White;
             this.chkEstado.Location = new System.Drawing.Point(900, 130);
             this.chkEstado.Name = "chkEstado";
-            this.chkEstado.Size = new System.Drawing.Size(63, 20);
+            this.chkEstado.Size = new System.Drawing.Size(68, 23);
             this.chkEstado.TabIndex = 12;
             this.chkEstado.Text = "Activo";
             this.chkEstado.UseVisualStyleBackColor = true;
             // 
             // txtPrecioBase
             // 
+            this.txtPrecioBase.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtPrecioBase.Location = new System.Drawing.Point(620, 127);
             this.txtPrecioBase.Name = "txtPrecioBase";
-            this.txtPrecioBase.Size = new System.Drawing.Size(220, 22);
+            this.txtPrecioBase.Size = new System.Drawing.Size(220, 25);
             this.txtPrecioBase.TabIndex = 11;
             // 
             // lblPrecioBase
             // 
             this.lblPrecioBase.AutoSize = true;
+            this.lblPrecioBase.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblPrecioBase.ForeColor = System.Drawing.Color.White;
             this.lblPrecioBase.Location = new System.Drawing.Point(520, 130);
             this.lblPrecioBase.Name = "lblPrecioBase";
-            this.lblPrecioBase.Size = new System.Drawing.Size(79, 16);
+            this.lblPrecioBase.Size = new System.Drawing.Size(91, 19);
             this.lblPrecioBase.TabIndex = 10;
             this.lblPrecioBase.Text = "Precio base";
             // 
             // cbCategoria
             // 
             this.cbCategoria.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCategoria.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbCategoria.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cbCategoria.FormattingEnabled = true;
             this.cbCategoria.Location = new System.Drawing.Point(220, 127);
             this.cbCategoria.Name = "cbCategoria";
-            this.cbCategoria.Size = new System.Drawing.Size(220, 24);
+            this.cbCategoria.Size = new System.Drawing.Size(220, 25);
             this.cbCategoria.TabIndex = 9;
             // 
             // lblCategoria
             // 
             this.lblCategoria.AutoSize = true;
+            this.lblCategoria.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCategoria.ForeColor = System.Drawing.Color.White;
             this.lblCategoria.Location = new System.Drawing.Point(100, 130);
             this.lblCategoria.Name = "lblCategoria";
-            this.lblCategoria.Size = new System.Drawing.Size(64, 16);
+            this.lblCategoria.Size = new System.Drawing.Size(73, 19);
             this.lblCategoria.TabIndex = 8;
             this.lblCategoria.Text = "Categoría";
             // 
             // cbUnidad
             // 
             this.cbUnidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbUnidad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbUnidad.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cbUnidad.FormattingEnabled = true;
             this.cbUnidad.Location = new System.Drawing.Point(900, 50);
             this.cbUnidad.Name = "cbUnidad";
-            this.cbUnidad.Size = new System.Drawing.Size(180, 24);
+            this.cbUnidad.Size = new System.Drawing.Size(180, 25);
             this.cbUnidad.TabIndex = 7;
             // 
             // lblUnidad
             // 
             this.lblUnidad.AutoSize = true;
+            this.lblUnidad.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblUnidad.ForeColor = System.Drawing.Color.White;
             this.lblUnidad.Location = new System.Drawing.Point(840, 53);
             this.lblUnidad.Name = "lblUnidad";
-            this.lblUnidad.Size = new System.Drawing.Size(50, 16);
+            this.lblUnidad.Size = new System.Drawing.Size(55, 19);
             this.lblUnidad.TabIndex = 6;
             this.lblUnidad.Text = "Unidad";
             // 
             // txtReferencia
             // 
+            this.txtReferencia.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtReferencia.Location = new System.Drawing.Point(620, 50);
             this.txtReferencia.Name = "txtReferencia";
-            this.txtReferencia.Size = new System.Drawing.Size(180, 22);
+            this.txtReferencia.Size = new System.Drawing.Size(180, 25);
             this.txtReferencia.TabIndex = 5;
             // 
             // lblReferencia
             // 
             this.lblReferencia.AutoSize = true;
+            this.lblReferencia.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblReferencia.ForeColor = System.Drawing.Color.White;
             this.lblReferencia.Location = new System.Drawing.Point(520, 53);
             this.lblReferencia.Name = "lblReferencia";
-            this.lblReferencia.Size = new System.Drawing.Size(73, 16);
+            this.lblReferencia.Size = new System.Drawing.Size(82, 19);
             this.lblReferencia.TabIndex = 4;
             this.lblReferencia.Text = "Referencia";
             // 
             // txtDescripcion
             // 
+            this.txtDescripcion.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtDescripcion.Location = new System.Drawing.Point(220, 87);
             this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(580, 22);
+            this.txtDescripcion.Size = new System.Drawing.Size(580, 25);
             this.txtDescripcion.TabIndex = 3;
             // 
             // lblDescripcion
             // 
             this.lblDescripcion.AutoSize = true;
+            this.lblDescripcion.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblDescripcion.ForeColor = System.Drawing.Color.White;
             this.lblDescripcion.Location = new System.Drawing.Point(100, 90);
             this.lblDescripcion.Name = "lblDescripcion";
-            this.lblDescripcion.Size = new System.Drawing.Size(79, 16);
+            this.lblDescripcion.Size = new System.Drawing.Size(89, 19);
             this.lblDescripcion.TabIndex = 2;
             this.lblDescripcion.Text = "Descripción";
             // 
             // txtCodigo
             // 
+            this.txtCodigo.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtCodigo.Location = new System.Drawing.Point(220, 50);
             this.txtCodigo.Name = "txtCodigo";
-            this.txtCodigo.Size = new System.Drawing.Size(220, 22);
+            this.txtCodigo.Size = new System.Drawing.Size(220, 25);
             this.txtCodigo.TabIndex = 1;
             // 
             // lblCodigo
             // 
             this.lblCodigo.AutoSize = true;
+            this.lblCodigo.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCodigo.ForeColor = System.Drawing.Color.White;
             this.lblCodigo.Location = new System.Drawing.Point(100, 53);
             this.lblCodigo.Name = "lblCodigo";
-            this.lblCodigo.Size = new System.Drawing.Size(53, 16);
+            this.lblCodigo.Size = new System.Drawing.Size(58, 19);
             this.lblCodigo.TabIndex = 0;
             this.lblCodigo.Text = "Código";
             // 
             // panelBotones
             // 
+            this.panelBotones.BackColor = System.Drawing.Color.FromArgb(223, 230, 233);
             this.panelBotones.Controls.Add(this.btnLimpiar);
             this.panelBotones.Controls.Add(this.btnActualizar);
             this.panelBotones.Controls.Add(this.btnGuardar);
@@ -240,36 +278,53 @@
             // 
             // btnLimpiar
             // 
+            this.btnLimpiar.BackColor = System.Drawing.Color.FromArgb(253, 203, 110);
+            this.btnLimpiar.FlatAppearance.BorderSize = 0;
+            this.btnLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnLimpiar.ForeColor = System.Drawing.Color.Black;
             this.btnLimpiar.Location = new System.Drawing.Point(380, 12);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(110, 32);
             this.btnLimpiar.TabIndex = 2;
-            this.btnLimpiar.Text = "Limpiar";
-            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Text = "🧹 Limpiar";
+            this.btnLimpiar.UseVisualStyleBackColor = false;
             // 
             // btnActualizar
             // 
+            this.btnActualizar.BackColor = System.Drawing.Color.FromArgb(9, 132, 227);
+            this.btnActualizar.FlatAppearance.BorderSize = 0;
+            this.btnActualizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnActualizar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnActualizar.ForeColor = System.Drawing.Color.White;
             this.btnActualizar.Location = new System.Drawing.Point(240, 12);
             this.btnActualizar.Name = "btnActualizar";
             this.btnActualizar.Size = new System.Drawing.Size(110, 32);
             this.btnActualizar.TabIndex = 1;
-            this.btnActualizar.Text = "Actualizar";
-            this.btnActualizar.UseVisualStyleBackColor = true;
+            this.btnActualizar.Text = "♻ Actualizar";
+            this.btnActualizar.UseVisualStyleBackColor = false;
             // 
             // btnGuardar
             // 
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(0, 184, 148);
+            this.btnGuardar.FlatAppearance.BorderSize = 0;
+            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
             this.btnGuardar.Location = new System.Drawing.Point(100, 12);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(110, 32);
             this.btnGuardar.TabIndex = 0;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Text = "💾 Guardar";
+            this.btnGuardar.UseVisualStyleBackColor = false;
             // 
             // dgvProductos
             // 
             this.dgvProductos.AllowUserToAddRows = false;
             this.dgvProductos.AllowUserToDeleteRows = false;
             this.dgvProductos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvProductos.BackgroundColor = System.Drawing.Color.FromArgb(45, 52, 54);
+            this.dgvProductos.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvProductos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProductos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvProductos.Location = new System.Drawing.Point(0, 320);
@@ -286,14 +341,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(45, 52, 54);
+            this.ClientSize = new System.Drawing.Size(1180, 720);
             this.Controls.Add(this.dgvProductos);
             this.Controls.Add(this.panelBotones);
             this.Controls.Add(this.panelFormulario);
             this.Controls.Add(this.panelTop);
             this.Name = "FrmProductos";
-            this.Size = new System.Drawing.Size(1180, 720);
             this.Text = "Productos";
-            this.Load += new System.EventHandler(this.FrmProductos_Load);
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.panelFormulario.ResumeLayout(false);
@@ -301,7 +356,6 @@
             this.panelBotones.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvProductos)).EndInit();
             this.ResumeLayout(false);
-
         }
 
         private System.Windows.Forms.Panel panelTop;

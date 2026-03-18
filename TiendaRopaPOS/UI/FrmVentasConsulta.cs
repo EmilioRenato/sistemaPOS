@@ -29,7 +29,49 @@ namespace TiendaRopaPOS.UI
             dtDesde.Value = DateTime.Today;
             dtHasta.Value = DateTime.Today;
 
+            AplicarEstiloVisual();
+            AplicarAnimaciones();
             CargarVentas();
+        }
+
+        private void AplicarEstiloVisual()
+        {
+            dgvVentas.EnableHeadersVisualStyles = false;
+            dgvVentas.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 52, 54);
+            dgvVentas.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvVentas.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvVentas.ColumnHeadersHeight = 34;
+
+            dgvVentas.DefaultCellStyle.BackColor = Color.FromArgb(99, 110, 114);
+            dgvVentas.DefaultCellStyle.ForeColor = Color.White;
+            dgvVentas.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvVentas.DefaultCellStyle.SelectionBackColor = Color.FromArgb(45, 52, 54);
+            dgvVentas.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvVentas.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(75, 82, 84);
+            dgvVentas.GridColor = Color.FromArgb(178, 190, 195);
+            dgvVentas.BorderStyle = BorderStyle.None;
+            dgvVentas.RowHeadersVisible = false;
+            dgvVentas.RowTemplate.Height = 30;
+
+            txtBuscar.Font = new Font("Segoe UI", 10F);
+            dtDesde.Font = new Font("Segoe UI", 10F);
+            dtHasta.Font = new Font("Segoe UI", 10F);
+        }
+
+        private void AplicarAnimaciones()
+        {
+            btnBuscar.MouseEnter += (s, e) => btnBuscar.BackColor = Color.FromArgb(0, 98, 204);
+            btnBuscar.MouseLeave += (s, e) => btnBuscar.BackColor = Color.FromArgb(9, 132, 227);
+
+            btnDetalle.MouseEnter += (s, e) => btnDetalle.BackColor = Color.FromArgb(0, 150, 136);
+            btnDetalle.MouseLeave += (s, e) => btnDetalle.BackColor = Color.FromArgb(0, 184, 148);
+
+            btnAnular.MouseEnter += (s, e) => btnAnular.BackColor = Color.FromArgb(180, 35, 40);
+            btnAnular.MouseLeave += (s, e) => btnAnular.BackColor = Color.FromArgb(214, 48, 49);
+
+            btnReimprimir.MouseEnter += (s, e) => btnReimprimir.BackColor = Color.FromArgb(90, 75, 210);
+            btnReimprimir.MouseLeave += (s, e) => btnReimprimir.BackColor = Color.FromArgb(108, 92, 231);
         }
 
         private void txtBuscar_KeyDown(object sender, KeyEventArgs e)
@@ -57,6 +99,7 @@ namespace TiendaRopaPOS.UI
                         v.TipoDocumento,
                         c.Nombres AS Cliente,
                         ISNULL(ven.Nombre, '') AS Vendedor,
+                        ISNULL(be.Nombre, '') AS CajaEmision,
                         mp.NombreMetodo AS MetodoPago,
                         v.Subtotal,
                         v.Iva,
@@ -66,6 +109,7 @@ namespace TiendaRopaPOS.UI
                     FROM Ventas v
                     INNER JOIN Clientes c ON v.IdCliente = c.IdCliente
                     LEFT JOIN Vendedores ven ON v.IdVendedor = ven.IdVendedor
+                    LEFT JOIN Bodegas be ON v.IdCajaEmision = be.IdBodega
                     INNER JOIN MetodosPago mp ON v.IdMetodoPago = mp.IdMetodoPago
                     WHERE v.FechaCreacion >= @Desde
                       AND v.FechaCreacion < @Hasta
@@ -73,6 +117,7 @@ namespace TiendaRopaPOS.UI
                             v.NumeroDocumento LIKE @Buscar
                             OR c.Nombres LIKE @Buscar
                             OR ISNULL(ven.Nombre,'') LIKE @Buscar
+                            OR ISNULL(be.Nombre,'') LIKE @Buscar
                             OR v.TipoDocumento LIKE @Buscar
                             OR v.Estado LIKE @Buscar
                           )
@@ -103,6 +148,9 @@ namespace TiendaRopaPOS.UI
 
                 if (dgvVentas.Columns.Contains("Vendedor"))
                     dgvVentas.Columns["Vendedor"].HeaderText = "Vendedor";
+
+                if (dgvVentas.Columns.Contains("CajaEmision"))
+                    dgvVentas.Columns["CajaEmision"].HeaderText = "Caja";
 
                 if (dgvVentas.Columns.Contains("MetodoPago"))
                     dgvVentas.Columns["MetodoPago"].HeaderText = "Pago";
@@ -138,23 +186,23 @@ namespace TiendaRopaPOS.UI
 
             if (estado == "ANULADA")
             {
-                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.MistyRose;
-                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.DarkRed;
-                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = Color.IndianRed;
+                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(120, 35, 40);
+                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.White;
+                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = Color.FromArgb(160, 45, 55);
                 dgvVentas.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.White;
             }
             else if (estado == "PROFORMA")
             {
-                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightYellow;
-                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
-                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = Color.Goldenrod;
+                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(180, 120, 20);
+                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.White;
+                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = Color.FromArgb(210, 150, 30);
                 dgvVentas.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.White;
             }
             else
             {
-                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Honeydew;
-                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.DarkGreen;
-                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = Color.SeaGreen;
+                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(0, 120, 90);
+                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.White;
+                dgvVentas.Rows[e.RowIndex].DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 150, 110);
                 dgvVentas.Rows[e.RowIndex].DefaultCellStyle.SelectionForeColor = Color.White;
             }
         }
@@ -385,9 +433,9 @@ namespace TiendaRopaPOS.UI
             FrmDetalleVenta frm = new FrmDetalleVenta(idVenta, true);
             frm.ShowDialog();
         }
+
         private void panelTop_Paint(object sender, PaintEventArgs e)
         {
-
         }
     }
 }

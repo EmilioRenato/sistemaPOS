@@ -22,3 +22,12 @@ C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\
 C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\obj\Debug\TiendaRopaPOS.UI.FrmDetalleCompra.resources
 C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\obj\Debug\TiendaRopaPOS.UI.FrmPagosCompras.resources
 C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\obj\Debug\TiendaRopaPOS.UI.FrmConfigCaja.resources
+C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\obj\Debug\TiendaRopaPOS.UI.FrmKardex.resources
+C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\obj\Debug\TiendaRopaPOS.UI.FrmUsuarios.resources
+C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\obj\Debug\TiendaRopaPOS.UI.FrmConfiguracionSistema.resources
+C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\obj\Debug\TiendaRopaPOS.UI.FrmDashboard.resources
+C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\bin\Debug\BouncyCastle.Crypto.dll
+C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\bin\Debug\FirmaXadesNet.dll
+C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\bin\Debug\Microsoft.Xades.dll
+C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\bin\Debug\BouncyCastle.Crypto.pdb
+C:\Users\renat\OneDrive\Desktop\Nueva carpeta\inv.5\TiendaRopaPOS\TiendaRopaPOS\obj\Debug\TiendaRo.6554B85C.Up2Date

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using TiendaRopaPOS.Clases;
@@ -33,11 +34,65 @@ namespace TiendaRopaPOS.UI
 
         private void FrmCompras_Load(object sender, EventArgs e)
         {
+            AplicarEstiloVisual();
+            AplicarAnimaciones();
+
             CargarProveedores();
             CargarBodegas();
             CargarCodigosProductos();
             ConfigurarDetalleCompra();
             LimpiarCompra();
+        }
+
+        private void AplicarEstiloVisual()
+        {
+            Font fuenteGeneral = new Font("Segoe UI", 10F, FontStyle.Regular);
+            Font fuenteBold = new Font("Segoe UI", 10F, FontStyle.Bold);
+
+            cbProveedor.Font = fuenteGeneral;
+            cbBodegaCompra.Font = fuenteGeneral;
+            txtNumeroDocumento.Font = fuenteGeneral;
+            txtDiasCredito.Font = fuenteGeneral;
+            chkPagada.Font = fuenteBold;
+
+            lblProveedor.Font = fuenteBold;
+            lblBodegaCompra.Font = fuenteBold;
+            lblNumeroDocumento.Font = fuenteBold;
+            lblDiasCredito.Font = fuenteBold;
+
+            lblTextoSubtotal.Font = fuenteBold;
+            lblTextoDescuento.Font = fuenteBold;
+            lblTextoIva.Font = fuenteBold;
+            lblTextoTotal.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+
+            dgvDetalleCompra.EnableHeadersVisualStyles = false;
+            dgvDetalleCompra.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 52, 54);
+            dgvDetalleCompra.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvDetalleCompra.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvDetalleCompra.ColumnHeadersHeight = 34;
+
+            dgvDetalleCompra.DefaultCellStyle.BackColor = Color.FromArgb(99, 110, 114);
+            dgvDetalleCompra.DefaultCellStyle.ForeColor = Color.White;
+            dgvDetalleCompra.DefaultCellStyle.Font = fuenteGeneral;
+            dgvDetalleCompra.DefaultCellStyle.SelectionBackColor = Color.FromArgb(75, 82, 84);
+            dgvDetalleCompra.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgvDetalleCompra.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(75, 82, 84);
+            dgvDetalleCompra.GridColor = Color.FromArgb(178, 190, 195);
+            dgvDetalleCompra.BorderStyle = BorderStyle.None;
+            dgvDetalleCompra.RowHeadersVisible = false;
+            dgvDetalleCompra.RowTemplate.Height = 30;
+        }
+
+        private void AplicarAnimaciones()
+        {
+            btnGuardarCompra.MouseEnter += (s, e) => btnGuardarCompra.BackColor = Color.FromArgb(0, 150, 136);
+            btnGuardarCompra.MouseLeave += (s, e) => btnGuardarCompra.BackColor = Color.FromArgb(0, 184, 148);
+
+            btnLimpiarCompra.MouseEnter += (s, e) => btnLimpiarCompra.BackColor = Color.FromArgb(250, 177, 19);
+            btnLimpiarCompra.MouseLeave += (s, e) => btnLimpiarCompra.BackColor = Color.FromArgb(253, 203, 110);
+
+            btnQuitarFila.MouseEnter += (s, e) => btnQuitarFila.BackColor = Color.FromArgb(180, 35, 40);
+            btnQuitarFila.MouseLeave += (s, e) => btnQuitarFila.BackColor = Color.FromArgb(214, 48, 49);
         }
 
         private void CargarProveedores()
@@ -67,16 +122,22 @@ namespace TiendaRopaPOS.UI
                 string query = @"
                     SELECT IdBodega, Nombre
                     FROM Bodegas
-                    WHERE Estado = 1
-                    ORDER BY Nombre";
+                    WHERE IdBodega = @IdBodega";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, cn);
+                da.SelectCommand.Parameters.AddWithValue("@IdBodega", ConfiguracionSistema.IdBodegaStockGeneral);
+
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
                 cbBodegaCompra.DataSource = dt;
                 cbBodegaCompra.DisplayMember = "Nombre";
                 cbBodegaCompra.ValueMember = "IdBodega";
+
+                if (cbBodegaCompra.Items.Count > 0)
+                    cbBodegaCompra.SelectedIndex = 0;
+
+                cbBodegaCompra.Enabled = false;
             }
         }
 
@@ -448,13 +509,6 @@ namespace TiendaRopaPOS.UI
                 {
                     MessageBox.Show("Seleccione un proveedor.");
                     cbProveedor.Focus();
-                    return;
-                }
-
-                if (cbBodegaCompra.SelectedValue == null)
-                {
-                    MessageBox.Show("Seleccione una bodega.");
-                    cbBodegaCompra.Focus();
                     return;
                 }
 

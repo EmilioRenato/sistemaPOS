@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\renat\\OneDrive\\Desktop\\Nueva carpeta\\inv.5\\TiendaRopaPOS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6437B8C9-F335-4968-80FA-2E7E013A3D66}|TiendaRopaPOS\\TiendaRopaPOS.csproj|c:\\users\\renat\\onedrive\\desktop\\nueva carpeta\\inv.5\\tiendaropapos\\tiendaropapos\\clases\\configuracioncajalocal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6437B8C9-F335-4968-80FA-2E7E013A3D66}|TiendaRopaPOS\\TiendaRopaPOS.csproj|solutionrelative:tiendaropapos\\clases\\configuracioncajalocal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ConfiguracionCajaLocal.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\OneDrive\\Desktop\\Nueva carpeta\\inv.5\\TiendaRopaPOS\\TiendaRopaPOS\\Clases\\ConfiguracionCajaLocal.cs",
+              "RelativeDocumentMoniker": "TiendaRopaPOS\\Clases\\ConfiguracionCajaLocal.cs",
+              "ToolTip": "C:\\Users\\renat\\OneDrive\\Desktop\\Nueva carpeta\\inv.5\\TiendaRopaPOS\\TiendaRopaPOS\\Clases\\ConfiguracionCajaLocal.cs",
+              "RelativeToolTip": "TiendaRopaPOS\\Clases\\ConfiguracionCajaLocal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-18T18:55:08.774Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
